@@ -10,6 +10,8 @@
 - function 기능을 보다 간결하게 사용할 수 있음
 
 3. 구조 분해 할당 (Destructuring)
+- 배열 내부 key, value를 쉽게 선언하여 빼낼 수 있음.
+- 구조 분해 할당 시 주의할 점 : key값과 선언하는 값이 다르면 에러남. 
 - let user = { name : five, age : 5 }
 console.log(user.age); // 5
 - let {name, age} = user;
