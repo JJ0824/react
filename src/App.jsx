@@ -1,11 +1,10 @@
-
+import { MyComp } from "./MyComp";
 
 function App() {
 
   return (
     <div>
-      <div></div>
-      <div></div>
+      <MyComp />
     </div>
   );
   
