@@ -45,12 +45,34 @@ let c = {…a}; // a값 복사
 
 // export 키워드를 붙이면 외부 파일의 컴포넌트가 import할 수 있음
 export function MyComp() {
-  return <>
-    <MyCompOnly />
-  </>;
+  const colors = ["black", "white", "blue"];
+  const [first, second] = colors; // 배열의 구조분해할당
+  const user = {
+    name : "Notch",
+    age : 25,
+  };
+  const {name, age} = user; // 객체의 구조분해할당
+  console.log(first + " " + second);
+  console.log(name + " " + age);
+
+  function method1(x) {
+    console.log("method1함수의 출력 : " + x);
+  }
+  
+  return (
+    <>
+      <p>나의 컴포넌트</p>
+      <MyCompOnly />
+      <div onClick={()=> method1("1000")}>여기를 클릭하시오!</div>
+    </>
+  );
 }
 
 // export 키워드가 없으면 같은 파일에서만 사용할 수 있음
 function MyCompOnly() {
-  return <></>;
+  return (
+    <>
+      <p>내부 컴포넌트</p>
+    </>
+  );
 }
