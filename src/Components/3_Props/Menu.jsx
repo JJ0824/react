@@ -11,10 +11,10 @@ const Container = styled.div`
 
 const Menu = () => {
   return <Container>
-    <Button />
-    <Button />
-    <Button />
-    <Button />
+    <Button name="HOME" />
+    <Button name="CONTENT" />
+    <Button name="CONTACT" />
+    <Button name="SOCIAL" />
   </Container>;
 }
 
