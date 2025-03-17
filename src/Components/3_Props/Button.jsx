@@ -16,9 +16,9 @@ const Box = styled.div`
   }
 `;
 
-const Button = ({name}) => {
+const Button = ({name, onClick}) => {
   return (
-    <Box>
+    <Box onClick={onClick}>
       <p>{name}</p>
     </Box>
   );
