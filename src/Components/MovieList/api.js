@@ -16,13 +16,8 @@ export const categories = [
 ]
 
 export async function getGenreListMovie() {
-  try {
-    const response = await axios.get(
+    return axios.get(
       "https://api.themoviedb.org/3/genre/movie/list?language=en-US&page=1", header);
-    console.log(response.data);
-  }catch (error) {
-    console.log(error);
-  }
 }
 
 export function getMoviesNowPlaying() {
@@ -43,4 +38,16 @@ export function getMoviesTopRated() {
 export function getMoviesUpcoming() {
   return axios.get(
     "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1", header);
+}
+
+export function getGenreName(idList) {
+  // [10, 20, 30]
+  const genreList = JSON.parse(sessionStorage.getItem("GenreList"));
+  return idList
+  .map( (id) => {
+    const found = genreList.genres.find((genre) => genre.id == id);
+    return found ? found.name : "";
+  })
+  .filter((name) => name)
+  .join(", ");
 }

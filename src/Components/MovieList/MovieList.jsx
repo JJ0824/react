@@ -1,4 +1,4 @@
-import { categories, getGenreListMovie } from "./api";
+import { categories, getGenreListMovie, getGenreName } from "./api";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -53,6 +53,7 @@ function MovieList() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedCat, setSelectedCat] = useState(0);
+  const [genreList, setGenreList] = useState([]);
   const IMG_PATH = "https://image.tmdb.org/t/p/original";
 
   useEffect(() => {
@@ -63,14 +64,22 @@ function MovieList() {
   // 2. try-catch 구문을 이용하는 것이 좋다.
   async function getMovies(index) {
     try {
-      const response = await categories[index].func(); // 200
+      // 장르리스트 요청
+      if (!JSON.parse(sessionStorage.getItem("GenreList"))) {
+        let response = await getGenreListMovie(); // 200 OK
+        setGenreList(response.data);
+        sessionStorage.setItem("GenreList", JSON.stringify(response.data));
+      }
+
+      // 무비리스트 요청
+      let response = await categories[index].func(); // 200 OK
       console.log(response.data);
       setSelectedCat(index);
       setData(response.data);
       setLoading(false);
-      getGenreListMovie();
     }catch (error) { // 400, 404, 500 기타 등등
-      console.log(error)
+      console.log(error);
+      alert("네트워크 오류로 정상적인 동작이 안되고 있습니다.");
     }
   }
 
@@ -98,7 +107,7 @@ function MovieList() {
               return <Card key={movie.id}>
                 <Img src={IMG_PATH+movie.poster_path}></Img>
                 <Text>타이틀 : {movie.title}</Text>
-                <Text>장르 : {movie.genre_ids}</Text> 
+                <Text>장르 : {getGenreName(movie.genre_ids)}</Text> 
                 {/* ① 컴포넌트 처음 로드할 때(==useEffect() []), 장르 리스트 요청 
                     ② 장르 리스트 저장 
                     ③ 변환함수 작성 -> 함수(숫자) return 장르텍스트 */}
