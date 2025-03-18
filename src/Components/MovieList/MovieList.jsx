@@ -37,7 +37,7 @@ const Card = styled.div`
   cursor: pointer;
   padding:10px;
 `;
-const Img = styled.div`
+const Img = styled.img`
   width: 100%;
 `;
 const Text = styled.div`
@@ -49,21 +49,34 @@ const Text = styled.div`
 function MovieList() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const IMG_PATH = "https://image.tmdb.org/t/p/original";
 
   useEffect(() => {
-    getMoviesNowPlaying.then((response)=>{
-      console.log(response.data);
-    });
+    getMovies();
   }, []);
 
+  // 1. await는 반드시 async 함수 안에 사용한다.
+  // 2. try-catch 구문을 이용하는 것이 좋다.
+  async function getMovies() {
+    try {
+      const response = await getMoviesNowPlaying(); // 200
+      console.log(response.data);
+      setData(response.data);
+      setLoading(false);
+    }catch (error) { // 400, 404, 500 기타 등등
+      console.log(error)
+    }
+  }
+
   function getMoviesNowPlaying() {
-    return axios.get("https://api.themoviedb.org/3/movie/now_playing", {
-        headers: {
-          accept: "application/json",
-          Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0NDFmN2JmMDgwOWMxZGFlNTViYzgyMTkzNDcwMTQwMiIsIm5iZiI6MTcyMTg4NDQ4OS4wMDI2MTcsInN1YiI6IjY0Njk2MzUwYTUwNDZlMDBlNWI2NjBkMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r3fi44yAiziGcROaufG04pkpjYAp71lcMtXXM9bXbPY",
-        },
-      });
+    return axios.get(
+      "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1", {
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmZjI4N2EzOWQ3MzA5ZTljZjJjZWYwZmVjMTdiNzFlMSIsIm5iZiI6MTc0MjE4MzMxMy40NDMsInN1YiI6IjY3ZDc5YjkxNWFkZGYyMDk1NWYxNTc2ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wwYyS_qHSuFvbKGBYTk6Cx2vw67eGMcgr3v3sitxlfk",
+      },
+    });
   }
 
   return (
@@ -76,27 +89,28 @@ function MovieList() {
         <Button>Upcoming</Button>
       </Tab>
       <Container>
-        <Card>
-          <Img></Img>
-          <Text>타이틀 : </Text>
-          <Text>장르 : </Text>
-          <hr />
-          <Text></Text>
-        </Card>
-        <Card>
-          <Img></Img>
-          <Text>타이틀 : </Text>
-          <Text>장르 : </Text>
-          <hr />
-          <Text></Text>
-        </Card>
-        <Card>
-          <Img></Img>
-          <Text>타이틀 : </Text>
-          <Text>장르 : </Text>
-          <hr />
-          <Text></Text>
-        </Card>
+        {loading ? ( 
+          <p>로딩 중...</p> 
+        )
+        : (
+          data.results.map((movie) => 
+            {
+              return <Card key={movie.id}>
+                <Img src={IMG_PATH+movie.poster_path}></Img>
+                <Text>타이틀 : {movie.title}</Text>
+                <Text>장르 : {movie.genre_ids}</Text>
+                <hr />
+                <Text>{movie.overview}</Text>
+              </Card>;
+            }) // 중괄호를 쓸거면 return이 필요하고 return 없이 쓰고싶다면 소괄호를 써야함.
+            // (<Card key={movie.id}>
+            //   <Img src=" "></Img>
+            //   <Text>타이틀 : {movie.title}</Text>
+            //   <Text>장르 : {movie.genre_ids}</Text>
+            //   <hr />
+            //   <Text>{movie.overview}</Text>
+            // </Card>))
+        )}
       </Container>
     </div>
   );
