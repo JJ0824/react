@@ -19,7 +19,7 @@ export async function getGenreListMovie() {
   try {
     const response = await axios.get(
       "https://api.themoviedb.org/3/genre/movie/list?language=en-US&page=1", header);
-    console.log(response);
+    console.log(response.data);
   }catch (error) {
     console.log(error);
   }
