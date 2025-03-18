@@ -40,8 +40,9 @@ export function getMoviesUpcoming() {
     "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1", header);
 }
 
+ // [10, 20, 30]과 같이 숫자의 배열을 매개변수로 전달하면 ["Adventure", "Drama", "Crime"]과 같이
+ // 문자열을 리턴하는 함수
 export function getGenreName(idList) {
-  // [10, 20, 30]
   const genreList = JSON.parse(sessionStorage.getItem("GenreList"));
   return idList
   .map( (id) => {
