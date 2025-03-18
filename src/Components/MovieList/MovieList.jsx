@@ -53,7 +53,6 @@ function MovieList() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedCat, setSelectedCat] = useState(0);
-  const [genreList, setGenreList] = useState([]);
   const IMG_PATH = "https://image.tmdb.org/t/p/original";
 
   useEffect(() => {
@@ -67,7 +66,6 @@ function MovieList() {
       // 장르리스트 요청
       if (!JSON.parse(sessionStorage.getItem("GenreList"))) {
         let response = await getGenreListMovie(); // 200 OK
-        setGenreList(response.data);
         sessionStorage.setItem("GenreList", JSON.stringify(response.data));
       }
 
