@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getMovieInfo } from "./api.js"
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -23,6 +24,14 @@ const Content = styled.div`
 `;
 
 function MovieDetail() {
+  async function getMovieInfo() {
+    try {
+
+    } catch (error) {
+      console.error();
+    }
+  }
+
   const [data, setData] = useState(null);
   const [credit, setCredit] = useState(null);
   const [loading, setLoading] = useState(true);

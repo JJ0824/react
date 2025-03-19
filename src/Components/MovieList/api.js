@@ -39,6 +39,14 @@ export function getMoviesUpcoming() {
   return axios.get(
     "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1", header);
 }
+export function getMovieDetailById(id) {
+  return axios.get(
+    `https://api.themoviedb.org/3/movie/${id}?language=en-US`, header);
+}
+export function getMovieCreditById(id) {
+  return axios.get(
+    `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`, header);
+}
 
  // [10, 20, 30]과 같이 숫자의 배열을 매개변수로 전달하면 "Adventure", "Drama", "Crime"과 같이
  // 문자열을 리턴하는 함수
