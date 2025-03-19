@@ -55,6 +55,7 @@ function MovieList() {
   const [selectedCat, setSelectedCat] = useState(0);
   const [genreList, setGenreList] = useState([]);
   const IMG_PATH = "https://image.tmdb.org/t/p/original";
+  const navigate = navigate();
 
   useEffect(() => {
     getMovies(0);
@@ -116,7 +117,7 @@ function MovieList() {
         : (
           data.results.map((movie) => 
             { // 중괄호를 쓸거면 return이 필요하고
-              return <Card key={movie.id}>
+              return <Card key={movie.id} onClick={()=> navigate(`${movie.id}`)}>
                 <Img src={IMG_PATH+movie.poster_path}></Img>
                 <Text>타이틀 : {movie.title}</Text>
                 <Text>장르 : {getGenreName(genreList ,movie.genre_ids)}</Text> 
