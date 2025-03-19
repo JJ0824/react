@@ -59,8 +59,8 @@ function MovieDetail() {
             </Header>
             <Img src={IMG_PATH + data.backdrop_path}></Img>
             <Content>
-              <p>{data.title}</p>
-              <p>장르</p>
+              <p>타이틀 : {data.title}</p>
+              <p>장르 : {data.genres.map().filter().join()}</p>
               <p>개봉일</p>
               <p>상영시간</p>
               <p>감독</p>
