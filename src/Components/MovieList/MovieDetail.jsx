@@ -1,5 +1,9 @@
 import React from "react";
 
+const Container = styled.div`
+  
+`;
+
 function MovieDetail() {
   return (
     <div>
