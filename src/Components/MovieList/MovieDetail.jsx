@@ -23,7 +23,9 @@ const Content = styled.div`
 
 function MovieDetail() {
   const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [credit, setCredit] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
 
   return (
     <div>
