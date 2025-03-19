@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -26,6 +27,7 @@ function MovieDetail() {
   const [credit, setCredit] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   return (
     <div>
