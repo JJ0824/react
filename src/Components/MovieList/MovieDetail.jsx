@@ -14,7 +14,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-const Img = styled.div`
+const Img = styled.img`
   width: 100%;
 `;
 const Content = styled.div`
