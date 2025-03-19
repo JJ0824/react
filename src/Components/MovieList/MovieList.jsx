@@ -67,7 +67,7 @@ function MovieList() {
   async function getMovies(index) {
     try {
       // 장르리스트 요청
-      if (genreList === 0) {
+      if (genreList.length === 0) {
         const storedGenreList = JSON.parse(sessionStorage.getItem("GenreList")); // 200 OK
         if (storedGenreList && storedGenreList.length > 0) {
           // 세션스토리지에 값이 있으면 상태 업데이트
@@ -121,7 +121,7 @@ function MovieList() {
               return <Card key={movie.id} onClick={()=> navigate(`${movie.id}`)}>
                 <Img src={IMG_PATH+movie.poster_path}></Img>
                 <Text>타이틀 : {movie.title}</Text>
-                <Text>장르 : {getGenreName(genreList ,movie.genre_ids)}</Text> 
+                <Text>장르 : {getGenreName(genreList, movie.genre_ids)}</Text> 
                 {/* ① 컴포넌트 처음 로드할 때(==useEffect() []), 장르 리스트 요청 
                     ② 장르 리스트 저장 
                     ③ 변환함수 작성 -> 함수(숫자) return 장르텍스트 */}
