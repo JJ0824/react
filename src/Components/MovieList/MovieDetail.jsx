@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -22,6 +22,9 @@ const Content = styled.div`
 `;
 
 function MovieDetail() {
+  const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
   return (
     <div>
       <Container>
