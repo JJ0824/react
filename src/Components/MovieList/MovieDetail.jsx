@@ -1,6 +1,16 @@
 import React from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
+  
+`;
+const Header = styled.div`
+  
+`;
+const Img = styled.div`
+  
+`;
+const Content = styled.div`
   
 `;
 
