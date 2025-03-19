@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMovieCreditById, getMovieDetailById, IMG_PATH } from "./api.js"
 import styled from "styled-components";
+import { IconBack } from "./icons.jsx";
 
 const Container = styled.div`
   width : 100%;
@@ -16,6 +17,10 @@ const Header = styled.div`
 `;
 const Img = styled.img`
   width: 100%;
+  margin : 20px 0;
+`;
+const Icon = styled.div`
+  cursor: pointer;
 `;
 const Content = styled.div`
   font-size: 1rem;
@@ -56,6 +61,9 @@ function MovieDetail() {
           loading ? "로딩 중..." : <>
             <Header>
               <h1>{data.title}</h1>
+              <Icon>
+                <IconBack />
+              </Icon>
             </Header>
             <Img src={IMG_PATH + data.backdrop_path}></Img>
             <Content>
@@ -63,10 +71,14 @@ function MovieDetail() {
               <p>장르 : {" "} {data.genres.map((g) => g.name).filter((name) => name).join(", ")}</p>
               <p>개봉일 : {data.release_date}</p>
               <p>상영시간 : {data.runtime + "분"}</p>
-              <p>감독 : {" "} {credit.crew.filter((d)=> d.department=="Directing").map((d) => d.name).filter((name) => name).join(", ")}</p>
-              <p>배우</p>
-              <p>영화설명</p>
+              <p>감독 : {" "} {credit.crew.filter((c)=> c.job=="Director").map((c) => c.name).filter((name) => name).join(", ")}</p>
+              <p>배우 : {" "} {credit.cast.slice(0, 10).map((c)=>c.name).filter((name)=>name).join(", ")}</p>
+              <p>줄거리 : {data.overview}</p>
             </Content>
+            <br/>
+            <br/>
+            <br/>
+            <br/> 
           </>
         }
       </Container>
