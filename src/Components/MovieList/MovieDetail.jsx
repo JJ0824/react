@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getMovieInfo } from "./api.js"
+import { getMovieCreditById, getMovieDetailById } from "./api.js"
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -24,19 +24,30 @@ const Content = styled.div`
 `;
 
 function MovieDetail() {
-  async function getMovieInfo() {
-    try {
-
-    } catch (error) {
-      console.error();
-    }
-  }
-
   const [data, setData] = useState(null);
   const [credit, setCredit] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
+  
+  useEffect(()=> {
+    getMovieInfo();
+  }, []);
+
+  async function getMovieInfo() {
+    try {
+      let response = await getMovieDetailById(id);
+      console.log(response.data);
+      setData(response.data);
+      response = await getMovieCreditById(id);
+      console.log(response.data);
+      setCredit(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      alert("네트워크 오류로 정상적인 동작이 안되고 있습니다.");
+    }
+  }
 
   return (
     <div>
