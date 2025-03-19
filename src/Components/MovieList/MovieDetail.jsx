@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getMovieCreditById, getMovieDetailById } from "./api.js"
+import { getMovieCreditById, getMovieDetailById, IMG_PATH } from "./api.js"
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -55,11 +55,11 @@ function MovieDetail() {
         {
           loading ? "로딩 중..." : <>
             <Header>
-              <h1>타이틀</h1>
+              <h1>{data.title}</h1>
             </Header>
-            <Img></Img>
+            <Img src={IMG_PATH + data.backdrop_path}></Img>
             <Content>
-              <p>타이틀</p>
+              <p>{data.title}</p>
               <p>장르</p>
               <p>개봉일</p>
               <p>상영시간</p>
