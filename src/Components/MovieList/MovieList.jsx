@@ -1,5 +1,6 @@
 import { categories, getGenreListMovie, getGenreName } from "./api";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Tab = styled.div`
@@ -55,7 +56,7 @@ function MovieList() {
   const [selectedCat, setSelectedCat] = useState(0);
   const [genreList, setGenreList] = useState([]);
   const IMG_PATH = "https://image.tmdb.org/t/p/original";
-  const navigate = navigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMovies(0);
