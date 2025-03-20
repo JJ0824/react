@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Button, Card, Container, Img, Text } from "./MovieList";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getGenreName, IMG_PATH, searchMoviesByKeyword, getGenreListMovie } from "./api";
-import noExist from "react";
+import noExist from "./img/no_exist.jpg";
 
 const SearchBox = styled.div`
   width: 100%;
