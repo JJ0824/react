@@ -20,6 +20,8 @@ const Img = styled.img`
   margin : 20px 0;
 `;
 const Icon = styled.div`
+  width: 50px;
+  height: 50px;
   cursor: pointer;
 `;
 const Content = styled.div`

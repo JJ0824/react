@@ -8,7 +8,7 @@ const Tab = styled.div`
   margin: 10px 0;
   gap:8px;
 `;
-const Button = styled.button`
+export const Button = styled.button`
   width: 130px;
   height: 40px;
   background-color: dodgerblue;
@@ -26,7 +26,7 @@ const Button = styled.button`
     background-color: #1a64b9;
   }
 `;
-const Container = styled.div`
+export const Container = styled.div`
   width : 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr; // ==repeat(3, 1fr); 밑에 열까지 확실하다면 row까지 줘도 됨
@@ -34,17 +34,17 @@ const Container = styled.div`
   flex-wrap: wrap; */
   gap: 10px;
 `;
-const Card = styled.div`
+export const Card = styled.div`
   width: 100%;
   /* width: 32%; */
   border: 1px solid dodgerblue;
   cursor: pointer;
   padding:10px;
 `;
-const Img = styled.img`
+export const Img = styled.img`
   width: 100%;
 `;
-const Text = styled.div`
+export const Text = styled.div`
   color: #333;
   overflow-wrap: break-word;
   word-break: break-all;
