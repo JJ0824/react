@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { IconEmail, IconPassword } from "./Icons";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { create } from "zustand";
 
 const Container = styled.div`
   width: 100%;
@@ -8,12 +10,12 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: hsl(218deg 50% 91%);
+  background-color: hsl(218deg 50% 91%);
 `;
 const Box = styled.div`
   width: 300px;
   height: auto;
-  background: hsl(213deg 85% 97%);
+  background-color: hsl(213deg 85% 97%);
   padding: 2em;
   display: flex;
   flex-direction: column;
@@ -22,7 +24,7 @@ const Box = styled.div`
   border-radius: 30px;
   box-shadow: 0 0 2em hsl(231deg 62% 94%);
 `;
-const Smallbox = styled.form`
+const Smallbox = styled.div`
   width: 100%;
   background: hsl(0deg 0% 100%);
   box-shadow: 0 0 2em hsl(231deg 62% 94%);
@@ -49,32 +51,67 @@ const Button = styled.button`
   width: 100%;
   padding: 1em;
   margin-top: 10px;
-  background: hsl(233deg 36% 38%);
+  background-color: hsl(233deg 36% 38%);
   color: hsl(0 0 100);
   border: none;
   border-radius: 30px;
   font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &:active {
+    transform: translateY(2px);
+  }
 `;
 
-function Login() {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+// 1. Zustand를 이용한 글로벌 상태관리 기본 사용법
+// export const useUserStore = create((set) => ({
+//   user: null,
+//   login: (email) => set({ user: { email } }), // 로그인 처리
+//   logout: () => set({ user: null }), // 로그아웃 처리
+// }));
 
-  function handleChangeUserName(e) {
-    setUserName(e.target.value);
+// 2. Zustand로 데이터를 스토리지에 저장하는 옵션 사용법(세션/로컬 스토리지에 자동으로 저장)
+export const useUserStore = create(
+  persist( // 위에서 사용한 익명함수랑 같은 함수
+    (set) => ({
+      user: null,
+      login: (email) => set({ user: { email } }), // 로그인 처리
+      logout: () => set({ user: null }), // 로그아웃 처리
+    }),
+    {
+      name: "user-storage", // sessionStorage에 저장될 키 이름
+      storage: createJSONStorage(() => sessionStorage), // sessionStorage에 저장
+    }
+  )
+);
+
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const buttonRef = useRef(null);
+  const { user, login, logout } = useUserStore();
+
+  function handleSubmit() {
+    console.log("click " + email + " " + password);
+    login(email);
+    setEmail("");
+    setPassword("");
   }
-  function handleChangePassword(e) {
-    setPassword(e.target.value);
-  }
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log("click " + userName + " " + password);
+
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      e.preventDefault(); // 원래 키의 동작을 막겠다. 라는 의미
+      buttonRef.current.click();
+    }
   }
 
   return (
     <div>
       <Container>
-        <Box onClick={(e) => handleSubmit(e)}>
+        <Box>
           <h1>LOGIN</h1>
           <br />
           <Smallbox>
@@ -83,10 +120,9 @@ function Login() {
               <IconEmail />
               <Input
                 type="text"
-                value={userName}
-                onChange={(e) => {
-                  handleChangeUserName(e);
-                }}
+                value={email}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Username@gmail.com"
               />
             </Icon>
@@ -97,15 +133,17 @@ function Login() {
               <IconPassword />
               <Input
                 type="password"
+                autoComplete="off"
                 value={password}
-                onChange={(e) => {
-                  handleChangePassword(e);
-                }}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="· · · · · · · · · · · ·"
               />
             </Icon>
           </Smallbox>
-          <Button type="submit">로그인</Button>
+          <Button ref={buttonRef} onClick={handleSubmit}>
+            로그인
+          </Button>
         </Box>
       </Container>
     </div>
