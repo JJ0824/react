@@ -20,8 +20,9 @@ const Img = styled.img`
   margin : 20px 0;
 `;
 const Icon = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
+  color : #fc3386;
   cursor: pointer;
 `;
 const Content = styled.div`
@@ -29,6 +30,10 @@ const Content = styled.div`
   line-height: 30px;
   color: #333;
 `;
+const Bottom = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
 
 function MovieDetail() {
   const [data, setData] = useState(null);
@@ -63,7 +68,7 @@ function MovieDetail() {
           loading ? "로딩 중..." : <>
             <Header>
               <h1>{data.title}</h1>
-              <Icon>
+              <Icon onClick={() => navigate(-1)}>
                 <IconBack />
               </Icon>
             </Header>
@@ -77,6 +82,11 @@ function MovieDetail() {
               <p>배우 : {" "} {credit.cast.slice(0, 10).map((c)=>c.name).filter((name)=>name).join(", ")}</p>
               <p>줄거리 : {data.overview}</p>
             </Content>
+            <Bottom>
+              <Icon onClick={() => navigate(-1)}>
+                <IconBack />
+              </Icon>
+            </Bottom>
             <br/>
             <br/>
             <br/>

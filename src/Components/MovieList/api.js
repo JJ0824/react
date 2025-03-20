@@ -18,8 +18,25 @@ export const categories = [
 ]
 
 export async function getGenreListMovie() {
-    return axios.get(
-      "https://api.themoviedb.org/3/genre/movie/list?language=en-US&page=1", header);
+  let storedGenreList = JSON.parse(sessionStorage.getItem("GenreList"));
+  if (storedGenreList && storedGenreList.length > 0) {
+    console.log("세션스토리지에 값이 있음");
+    return storedGenreList;
+  } else {
+    console.log("세션스토리지에 없어서 API 호출");
+    try {
+      const response = await axios.get(
+        "https://api.themoviedb.org/3/genre/movie/list?language=en-US&page=1",
+        header
+      );
+      const genreList = response.data.genres;
+      sessionStorage.setItem("GenreList", JSON.stringify(genreList));
+      return genreList;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
 }
 
 export function getMoviesNowPlaying() {
@@ -51,7 +68,7 @@ export function getMovieCreditById(id) {
 }
 export function searchMoviesByKeyword(keyword) {
   return axios.get(
-  `https://api.themoviedb.org/3/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1`, header);
+    `https://api.themoviedb.org/3/search/movie?query=${keyword}&include_adult=false&language=en-US&page=1`, header);
 }
 
  // [10, 20, 30]과 같이 숫자의 배열을 매개변수로 전달하면 "Adventure", "Drama", "Crime"과 같이
