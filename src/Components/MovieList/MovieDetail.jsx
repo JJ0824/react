@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getMovieCreditById, getMovieDetailById, IMG_PATH } from "./api.js"
 import styled from "styled-components";
-import { IconBack } from "./icons.jsx";
+import noExist from "./img/no_exist.jpg";
+import { IconBack } from "./Icons";
 
 const Container = styled.div`
   width : 100%;
@@ -72,7 +73,7 @@ function MovieDetail() {
                 <IconBack />
               </Icon>
             </Header>
-            <Img src={IMG_PATH + data.backdrop_path}></Img>
+            <Img src={data.poster_path ? IMG_PATH + data.poster_path : noExist}></Img>
             <Content>
               <p>타이틀 : {data.title}</p>
               <p>장르 : {" "} {data.genres.map((g) => g.name).filter((name) => name).join(", ")}</p>

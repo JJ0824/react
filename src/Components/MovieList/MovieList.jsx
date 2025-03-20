@@ -2,6 +2,7 @@ import { categories, getGenreListMovie, getGenreName } from "./api";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import noExist from "./img/no_exist.jpg"; 
 
 const Tab = styled.div`
   display: flex;
@@ -108,7 +109,7 @@ function MovieList() {
           data.results.map((movie) => 
             { // 중괄호를 쓸거면 return이 필요하고
               return <Card key={movie.id} onClick={()=> navigate(`${movie.id}`)}>
-                <Img src={IMG_PATH+movie.poster_path}></Img>
+                <Img src={movie.poster_path ? IMG_PATH + movie.poster_path : noExist}></Img>
                 <Text>타이틀 : {movie.title}</Text>
                 <Text>장르 : {getGenreName(genreList, movie.genre_ids)}</Text> 
                 {/* ① 컴포넌트 처음 로드할 때(==useEffect() []), 장르 리스트 요청 
