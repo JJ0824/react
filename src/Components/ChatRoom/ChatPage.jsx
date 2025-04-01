@@ -85,26 +85,40 @@ const colors = [
   "#FF9800",
   "#39bbb0",
 ];
-function ChatPage({username, message, stompClientRef}) {
+
+function ChatPage({ username, message, stompClientRef }) {
   const [value, setValue] = useState("");
   const [messageList, setMessageList] = useState([]);
+  const messageAreaRef = useRef();
 
-  useEffect(()=>{
+  useEffect(() => {
+    handleMessage(message);
+  }, [message]);
+
+  useEffect(() => {
+    if (messageAreaRef.current) {
+      messageAreaRef.current.scrollTop = messageAreaRef.current.scrollHeight;
+    }
+  }, [messageList]);
+
+  function handleMessage(message) {
     if (!message) {
       return;
     }
-    if (message.type ==="JOIN") {
+    console.log(message);
+    if (message.type === "JOIN") {
       message.content = message.sender + " joined!";
     } else if (message.type === "LEAVE") {
       message.content = message.sender + " left!";
+    } else {
     }
-    setMessageList((prev)=> [...prev, message]);
-  }, [message]);
-  
+    setMessageList((prev) => [...prev, message]);
+  }
+
   function sendMessage(e) {
     e.preventDefault();
     if (value && stompClientRef.current) {
-      const chatMessage = { 
+      const chatMessage = {
         sender: username,
         content: value,
         type: "CHAT",
@@ -117,42 +131,53 @@ function ChatPage({username, message, stompClientRef}) {
     }
   }
 
-  return <Container>
-    <Header>
-      <h2>Spring WebSocket Chat Demo</h2>
-    </Header>
-    <MessageArea>
-      {
-        messageList.map((m, i) => 
-          m.type === "JOIN" || m.type === "LEAVE" ? (   
+  function getAvatarColor(messageSender) {
+    var hash = 0;
+    for (var i = 0; i < messageSender.length; i++) {
+      hash = 31 * hash + messageSender.charCodeAt(i);
+    }
+    var index = Math.abs(hash % colors.length);
+    return colors[index];
+  }
+
+  return (
+    <Container>
+      <Header>
+        <h2>Spring WebSocket Chat Demo</h2>
+      </Header>
+      <MessageArea ref={messageAreaRef}>
+        {messageList?.map((m, i) =>
+          m.type === "JOIN" || m.type === "LEAVE" ? (
             <Join key={i}>{m.content}</Join>
           ) : (
-        <MessageWrapper key ={i}>
-          <Icon>
-            <span>{m.sender[0].toUpperCase()}</span>
-          </Icon>
-          <Message>
-            <div>
-              <strong>{m.sender}</strong>
-            </div>
-            <div>{m.content}</div>
-          </Message>
-        </MessageWrapper>
-      ))}
-    </MessageArea>
-    <form onSubmit={sendMessage}>
-      <Box>
-        <Input 
-          type="text"
-          placeholder="Type message..."
-          autoComplete="off"
-          value={value}
-          onChange={(e)=>setValue(e.target.value)}
-        />
-        <Button type="submit">Send</Button>
-      </Box>
-    </form>
-  </Container>;
+            <MessageWrapper key={i}>
+              <Icon $bgcolor={getAvatarColor(m.sender)}>
+                <span>{m.sender[0].toUpperCase()}</span>
+              </Icon>
+              <Message>
+                <div>
+                  <strong>{m.sender}</strong>
+                </div>
+                <div>{m.content}</div>
+              </Message>
+            </MessageWrapper>
+          )
+        )}
+      </MessageArea>
+      <form onSubmit={sendMessage}>
+        <Box>
+          <Input
+            type="text"
+            placeholder="Type a message..."
+            autoComplete="off"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <Button type="submit">Send</Button>
+        </Box>
+      </form>
+    </Container>
+  );
 }
 
 export default ChatPage;
